@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Enigma Infinito: Guia de Estudo sobre o Número PI</title>
+
+    <!-- Tipografia -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                    },
+                    colors: {
+                        bronze: {
+                            50: '#fdf8f4',
+                            100: '#faefe6',
+                            200: '#f4dbcc',
+                            300: '#ecc0a8',
+                            400: '#e19d7b',
+                            500: '#d67d51',
+                            600: '#c86035',
+                            700: '#a74b28',
+                            800: '#853e24',
+                            900: '#6b3420',
+                            950: '#4a2b18'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Ícones Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- MathJax para Fórmulas Matemáticas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Estilos Personalizados -->
+    <style>
+        html { scroll-behavior: smooth; }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+        }
+        .shake-animation { animation: shake 0.4s ease-in-out; }
+        .zoomable:hover { transform: scale(1.02); transition: transform 0.3s ease; cursor: pointer; }
+
+        /* Ajustes robustos para impressão colorida */
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                background-color: white !important;
+            }
+            @page { margin: 0; }
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 font-sans antialiased flex flex-col min-h-screen">
+
+    <!-- Navbar Fixa -->
+    <header class="bg-white border-b border-stone-200 sticky top-0 z-40 shadow-sm print:hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="bg-bronze-600 text-white p-2 rounded-lg">
+                        <i data-lucide="pi" class="w-6 h-6"></i>
+                    </div>
+                    <h1 class="font-serif font-bold text-xl text-stone-900 hidden sm:block">O Enigma de Pi</h1>
+                </div>
+                
+                <nav class="hidden md:flex space-x-1 overflow-x-auto no-scrollbar" id="nav-menu">
+                    <button onclick="switchTab('estudo')" class="nav-btn active px-3 py-2 rounded-md text-sm font-medium transition-colors text-bronze-700 bg-bronze-50">Multimédia</button>
+                    <button onclick="switchTab('resumos')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-stone-600 hover:bg-stone-100 transition-colors">Resumos</button>
+                    <button onclick="switchTab('cronologia')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-stone-600 hover:bg-stone-100 transition-colors">Cronologia</button>
+                    <button onclick="switchTab('cards')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-stone-600 hover:bg-stone-100 transition-colors">Quiz Cards</button>
+                    <button onclick="switchTab('quiz')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-stone-600 hover:bg-stone-100 transition-colors">Formativo</button>
+                    <button onclick="switchTab('campeonato')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-stone-600 hover:bg-stone-100 transition-colors">Campeonato</button>
+                </nav>
+
+                <div class="flex items-center gap-2">
+                    <button onclick="openModal('user-guide-modal')" class="text-stone-500 hover:text-bronze-600 p-2 rounded-full hover:bg-stone-100 transition-colors" title="Guia de Utilizador">
+                        <i data-lucide="info" class="w-5 h-5"></i>
+                    </button>
+                    <button class="md:hidden p-2 text-stone-600" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="mobile-menu" class="hidden md:hidden border-t border-stone-200 bg-white">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col">
+                <button onclick="switchTab('estudo'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-left px-3 py-2 rounded-md text-base font-medium text-bronze-700 bg-bronze-50">Multimédia</button>
+                <button onclick="switchTab('resumos'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-left px-3 py-2 rounded-md text-base font-medium text-stone-600 hover:bg-stone-100">Resumos Temáticos</button>
+                <button onclick="switchTab('cronologia'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-left px-3 py-2 rounded-md text-base font-medium text-stone-600 hover:bg-stone-100">Lab. Cronológico</button>
+                <button onclick="switchTab('cards'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-left px-3 py-2 rounded-md text-base font-medium text-stone-600 hover:bg-stone-100">Quiz Cards</button>
+                <button onclick="switchTab('quiz'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-left px-3 py-2 rounded-md text-base font-medium text-stone-600 hover:bg-stone-100">Quiz Formativo</button>
+                <button onclick="switchTab('campeonato'); document.getElementById('mobile-menu').classList.add('hidden')" class="text-left px-3 py-2 rounded-md text-base font-medium text-stone-600 hover:bg-stone-100">Campeonato</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 print:hidden">
+        
+        <!-- SECÇÃO 1: ESTUDO E MULTIMÉDIA -->
+        <section id="tab-estudo" class="tab-content block animate-fade-in">
+            <div class="mb-8">
+                <h2 class="font-serif text-3xl font-bold text-stone-900 mb-2">Estudo & Multimédia</h2>
+                <p class="text-stone-600 text-lg">Explore os diversos recursos visuais e auditivos sobre o enigma do número \(\pi\).</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                <!-- Infografia -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-stone-200 flex flex-col hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-stone-100 text-stone-700 rounded-xl flex items-center justify-center mb-4">
+                        <i data-lucide="image" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-stone-800 mb-2">Infografia Interativa</h3>
+                    <p class="text-stone-600 flex-grow mb-4">Visualize de forma gráfica a relação entre o perímetro, o diâmetro e as aproximações de Pi ao longo dos séculos.</p>
+                    <button onclick="openModal('infografia-modal')" class="w-full bg-stone-100 hover:bg-stone-200 text-stone-800 font-medium py-2 px-4 rounded-lg transition-colors flex justify-center items-center gap-2 border border-stone-200">
+                        <i data-lucide="zoom-in" class="w-4 h-4"></i> Ampliar Infografia
+                    </button>
+                </div>
+
+                <!-- Slides -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-stone-200 flex flex-col hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-bronze-100 text-bronze-700 rounded-xl flex items-center justify-center mb-4">
+                        <i data-lucide="presentation" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-stone-800 mb-2">Diapositivos de Estudo</h3>
+                    <p class="text-stone-600 flex-grow mb-4">Aceda à apresentação completa sobre os paradigmas de cálculo de \(\pi\). Contém 15 diapositivos informativos.</p>
+                    <button onclick="openModal('slides-modal'); initSlides();" class="w-full bg-stone-100 hover:bg-stone-200 text-stone-800 font-medium py-2 px-4 rounded-lg transition-colors flex justify-center items-center gap-2 border border-stone-200">
+                        <i data-lucide="play-square" class="w-4 h-4"></i> Iniciar Apresentação
+                    </button>
+                </div>
+
+                <!-- Vídeo -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-stone-200 flex flex-col hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-rose-100 text-rose-700 rounded-xl flex items-center justify-center mb-4">
+                        <i data-lucide="video" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-stone-800 mb-2">Vídeo Resumo</h3>
+                    <p class="text-stone-600 mb-4">Assista a uma explicação visual sobre a natureza dos números reais e a imortalidade da constante.</p>
+                    <div class="relative w-full aspect-video bg-stone-900 rounded-lg overflow-hidden border border-stone-300 shadow-inner">
+                        <video controls class="w-full h-full object-cover">
+                            <source src="./video.mp4" type="video/mp4">
+                            O seu navegador não suporta a tag de vídeo.
+                        </video>
+                    </div>
+                </div>
+
+                <!-- Podcast -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-stone-200 flex flex-col hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-stone-800 text-bronze-300 rounded-xl flex items-center justify-center mb-4">
+                        <i data-lucide="headphones" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-stone-800 mb-2">Podcast: O Enigma Infinito</h3>
+                    <p class="text-stone-600 flex-grow mb-4">Ouça as discussões e reflexões de especialistas sobre como \(\pi\) influencia a física quântica e as teorias de Einstein.</p>
+                    <div class="w-full bg-stone-100 p-4 rounded-lg border border-stone-200 mt-auto shadow-inner">
+                        <audio controls class="w-full">
+                            <source src="./podcast.mp3" type="audio/mpeg">
+                            O seu navegador não suporta o elemento de áudio.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECÇÃO 2: RESUMOS TEMÁTICOS -->
+        <section id="tab-resumos" class="tab-content hidden animate-fade-in">
+            <div class="mb-8">
+                <h2 class="font-serif text-3xl font-bold text-stone-900 mb-2">Resumos Explicativos</h2>
+                <p class="text-stone-600 text-lg">Consolidação de conhecimentos baseada nas fontes bibliográficas fundamentais, expandida para maior clareza pedagógica.</p>
+            </div>
+
+            <div class="space-y-4" id="accordion-container">
+                <!-- Injetado via JS -->
+            </div>
+        </section>
+
+        <!-- SECÇÃO 3: LAB CRONOLÓGICO -->
+        <section id="tab-cronologia" class="tab-content hidden animate-fade-in">
+            <div class="mb-8">
+                <h2 class="font-serif text-3xl font-bold text-stone-900 mb-2">Laboratório Cronológico</h2>
+                <p class="text-stone-600 text-lg">Uma viagem no tempo pela evolução do cálculo e compreensão do número \(\pi\).</p>
+            </div>
+
+            <div class="relative border-l-4 border-bronze-300 ml-3 md:ml-6 space-y-8 pb-8" id="timeline-container">
+                <!-- Injetado via JS -->
+            </div>
+        </section>
+
+        <!-- SECÇÃO 4: QUIZ CARDS -->
+        <section id="tab-cards" class="tab-content hidden animate-fade-in">
+            <div class="mb-8">
+                <h2 class="font-serif text-3xl font-bold text-stone-900 mb-2">Quiz Cards Interativos</h2>
+                <p class="text-stone-600 text-lg">Selecione a resposta correta para virar o cartão e revelar a explicação detalhada. Coleção completa de cartões formativos.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="quiz-cards-container">
+                <!-- Injetado via JS -->
+            </div>
+        </section>
+
+        <!-- SECÇÃO 5: QUIZ FORMATIVO -->
+        <section id="tab-quiz" class="tab-content hidden animate-fade-in">
+            <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h2 class="font-serif text-3xl font-bold text-stone-900 mb-2">Questionário Formativo</h2>
+                    <p class="text-stone-600 text-lg">O feedback é providenciado <strong>imediatamente</strong> após cada seleção para facilitar a aprendizagem.</p>
+                </div>
+                <div id="quiz-progress-indicator" class="bg-bronze-100 text-bronze-900 px-4 py-2 rounded-lg font-semibold whitespace-nowrap hidden shadow-sm border border-bronze-200">
+                    Progresso: <span id="quiz-answered-count">0</span> / <span id="quiz-total-count">0</span>
+                </div>
+            </div>
+
+            <div id="quiz-questions-container" class="space-y-8">
+                <!-- Perguntas Injetadas via JS -->
+            </div>
+
+            <div class="mt-8 flex justify-end" id="quiz-submit-container">
+                <button onclick="submitFormativeQuiz()" class="bg-bronze-600 hover:bg-bronze-700 text-white font-bold py-3 px-8 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-2 text-lg">
+                    <i data-lucide="bar-chart-2" class="w-5 h-5"></i> Ver Relatório Final
+                </button>
+            </div>
+
+            <!-- Área de Resultados do Quiz Formativo -->
+            <div id="quiz-results-container" class="hidden mt-8 pt-8 border-t border-stone-200">
+                <h3 class="text-2xl font-bold text-stone-800 mb-6 flex items-center gap-2">
+                    <i data-lucide="clipboard-check" class="text-bronze-600"></i> Relatório de Desempenho
+                </h3>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-white p-4 rounded-xl border border-stone-200 shadow-sm text-center">
+                        <div class="text-stone-500 text-sm font-medium mb-1">Nota Final</div>
+                        <div class="text-3xl font-bold text-bronze-600" id="res-percent">0%</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-emerald-200 shadow-sm text-center">
+                        <div class="text-emerald-600 text-sm font-medium mb-1">Corretas</div>
+                        <div class="text-3xl font-bold text-emerald-600" id="res-correct">0</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-rose-200 shadow-sm text-center">
+                        <div class="text-rose-600 text-sm font-medium mb-1">Incorretas</div>
+                        <div class="text-3xl font-bold text-rose-600" id="res-incorrect">0</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-amber-200 shadow-sm text-center">
+                        <div class="text-amber-600 text-sm font-medium mb-1">Ignoradas</div>
+                        <div class="text-3xl font-bold text-amber-600" id="res-ignored">0</div>
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <button onclick="reviewQuiz()" class="bg-stone-800 hover:bg-stone-900 text-white px-6 py-3 rounded-xl font-medium transition-colors flex items-center gap-2 shadow-md">
+                        <i data-lucide="search" class="w-5 h-5"></i> Rever Correções
+                    </button>
+                    <button onclick="resetFormativeQuiz()" class="bg-white border border-stone-300 hover:bg-stone-50 text-stone-700 px-6 py-3 rounded-xl font-medium transition-colors flex items-center gap-2 shadow-sm">
+                        <i data-lucide="rotate-ccw" class="w-5 h-5"></i> Tentar Novamente
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECÇÃO 6: CAMPEONATO -->
+        <section id="tab-campeonato" class="tab-content hidden animate-fade-in">
+            <div class="mb-8 text-center max-w-3xl mx-auto">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-bronze-100 text-bronze-600 rounded-full mb-4 shadow-inner border border-bronze-200">
+                    <i data-lucide="trophy" class="w-8 h-8"></i>
+                </div>
+                <h2 class="font-serif text-4xl font-bold text-stone-900 mb-4">Campeonato Oficial: Morte Súbita</h2>
+                <p class="text-stone-600 text-lg mb-8">O desafio divide-se em 5 grupos de perguntas. Responda corretamente a todas as 5 questões de um grupo para ganhar o crachá respetivo. <strong>Uma resposta errada aciona a morte súbita:</strong> perde o crachá desse grupo e avança automaticamente para o grupo seguinte.</p>
+                
+                <div id="champ-registration" class="bg-white p-8 rounded-2xl shadow-md border border-stone-200">
+                    <label class="block text-left text-sm font-bold text-stone-700 mb-2">Identificação do Utilizador</label>
+                    <input type="text" id="champ-username" placeholder="Insira o seu nome completo..." class="w-full px-4 py-3 rounded-lg border border-stone-300 focus:ring-2 focus:ring-bronze-500 focus:border-bronze-500 outline-none transition-shadow mb-6 text-lg bg-stone-50">
+                    <button onclick="startChampionship()" class="w-full bg-bronze-600 hover:bg-bronze-700 text-white font-bold py-3 px-8 rounded-xl shadow-md transition-colors text-lg">
+                        Iniciar Campeonato
+                    </button>
+                </div>
+            </div>
+
+            <!-- Área Ativa do Campeonato -->
+            <div id="champ-quiz-area" class="hidden max-w-3xl mx-auto">
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-stone-200 mb-6 flex justify-between items-center sticky top-16 z-30">
+                    <div class="font-bold text-stone-700 flex items-center gap-2">
+                        <i data-lucide="user" class="w-4 h-4 text-bronze-600"></i> <span id="champ-display-name"></span>
+                    </div>
+                    <div class="text-sm bg-stone-100 text-stone-800 border border-stone-200 px-3 py-1 rounded-full font-medium flex items-center gap-2">
+                        A disputar: <strong id="champ-current-badge-name" class="uppercase text-bronze-700"></strong>
+                    </div>
+                </div>
+
+                <div class="mb-4 text-stone-500 font-bold text-sm tracking-widest uppercase flex justify-between">
+                    <span>Nível <span id="champ-level-indicator">1</span> de 5</span>
+                    <span>Questão <span id="champ-q-in-group">1</span>/5</span>
+                </div>
+
+                <!-- Contentor de Questão Única -->
+                <div id="champ-single-q-container" class="transition-opacity duration-300">
+                    <!-- Injetado via JS -->
+                </div>
+            </div>
+
+            <!-- Vista Final / Pré-Diploma -->
+            <div id="champ-diploma-view" class="hidden mt-8 max-w-4xl mx-auto">
+                <div class="bg-stone-800 text-white rounded-t-2xl p-6 text-center">
+                    <h3 class="text-2xl font-bold mb-2">O Campeonato terminou!</h3>
+                    <p class="text-stone-300" id="champ-final-score-text">Sobreviveu à prova de Morte Súbita.</p>
+                </div>
+                <div class="bg-white border-x border-b border-stone-200 rounded-b-2xl p-8 flex flex-col items-center shadow-sm">
+                    
+                    <h4 class="text-stone-500 font-bold uppercase tracking-widest text-sm mb-6">A sua Progressão (5 Crachás)</h4>
+                    <div class="flex flex-wrap justify-center gap-4 md:gap-6 mb-10 w-full" id="champ-badges-display">
+                        <!-- Badges injetados -->
+                    </div>
+
+                    <p class="text-stone-600 text-center mb-8 max-w-lg">O seu relatório final de qualidade reflete a sua perícia ao longo das provas de morte súbita. Imprima o seu diploma oficial como registo do seu mérito.</p>
+                    
+                    <div class="flex gap-4">
+                        <button onclick="window.print()" class="bg-bronze-600 hover:bg-bronze-700 text-white px-6 py-3 rounded-xl font-bold transition-colors flex items-center gap-2 shadow-md">
+                            <i data-lucide="printer" class="w-5 h-5"></i> Imprimir Diploma
+                        </button>
+                        <button onclick="resetChampionship()" class="bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-300 px-6 py-3 rounded-xl font-medium transition-colors flex items-center gap-2">
+                            <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Tentar Novamente
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Diploma Oficial - Agora formatado exclusivamente para ecrã de Impressão -->
+    <div id="printable-diploma" class="hidden print:flex flex-col items-center justify-center print:fixed print:inset-0 print:w-full print:h-full bg-white z-50 p-6 sm:p-10">
+        <div class="border-[12px] border-double border-stone-800 p-10 text-center w-full h-full flex flex-col items-center justify-center relative bg-white">
+            <div class="absolute top-10 right-10 opacity-5 text-stone-900"><i data-lucide="pi" style="width: 180px; height: 180px;"></i></div>
+            <div class="absolute bottom-10 left-10 opacity-5 text-stone-900"><i data-lucide="award" style="width: 180px; height: 180px;"></i></div>
+            
+            <h1 class="font-serif text-5xl font-bold text-stone-900 mb-4 tracking-tight">DIPLOMA DE MÉRITO</h1>
+            <h2 class="text-2xl text-stone-500 mb-12 uppercase tracking-widest font-medium">O Enigma de Pi</h2>
+            
+            <p class="text-lg text-stone-700 mb-2">Certifica-se que</p>
+            <h3 class="text-4xl font-bold text-bronze-700 border-b-2 border-stone-300 pb-2 mb-10 px-10 inline-block" id="champ-diploma-name">[Nome do Aluno]</h3>
+            
+            <p class="text-lg text-stone-700 mb-6 max-w-2xl mx-auto leading-relaxed">Concluiu com êxito o Campeonato de Morte Súbita sobre a Natureza, História, Paradigmas de Cálculo e as propriedades transcendentes do número \(\pi\), obtendo a taxa de sucesso global de:</p>
+            
+            <div class="text-6xl font-black text-stone-900 mb-12" id="champ-diploma-score">0%</div>
+
+            <h4 class="text-sm font-bold text-stone-400 uppercase tracking-widest mb-4">Condecorações Resgatadas (Morte Súbita)</h4>
+            <div class="flex flex-wrap justify-center gap-6 mb-16" id="champ-diploma-badges">
+                <!-- Badges impressos injetados via JS -->
+            </div>
+
+            <div class="w-full flex justify-between items-end mt-auto pt-10 border-t-2 border-stone-200">
+                <div class="text-left">
+                    <p class="text-sm font-bold text-stone-800 uppercase tracking-wider">Data de Emissão</p>
+                    <p class="text-stone-600 font-medium" id="champ-diploma-date">--</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm font-bold text-stone-800 uppercase tracking-wider">Assinatura do Autor</p>
+                    <p class="text-stone-500 font-serif italic mt-2 text-xl">Teodósio Faria</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="bg-stone-900 text-stone-400 py-6 text-center mt-auto print:hidden">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p>&copy; 2026 Guia de Estudo sobre o número PI. Todos os direitos reservados.</p>
+            <p class="flex items-center gap-1 font-medium text-stone-300">
+                <i data-lucide="pen-tool" class="w-4 h-4"></i> Criado por Teodósio Faria
+            </p>
+        </div>
+    </footer>
+
+    <!-- MODAIS MULTIMÉDIA E INSTRUÇÕES -->
+    <!-- Modal Infografia -->
+    <div id="infografia-modal" class="fixed inset-0 z-50 bg-stone-900/90 hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300 print:hidden">
+        <div class="relative w-full max-w-5xl max-h-[90vh] bg-white rounded-xl overflow-hidden shadow-2xl flex flex-col">
+            <div class="p-4 border-b border-stone-200 flex justify-between items-center bg-stone-50">
+                <h3 class="font-bold text-lg text-stone-800">Infografia: O Universo de Pi</h3>
+                <button onclick="closeModal('infografia-modal')" class="text-stone-500 hover:text-rose-500 transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
+            </div>
+            <div class="overflow-auto p-4 flex-grow bg-stone-200 flex items-center justify-center">
+                <img src="./infografia.jpg" alt="Infografia Pi" class="max-w-full h-auto zoomable shadow-md" onerror="this.src='https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'; this.onerror=null;">
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Slides -->
+    <div id="slides-modal" class="fixed inset-0 z-50 bg-stone-900/95 hidden flex items-center justify-center p-2 sm:p-6 opacity-0 transition-opacity duration-300 print:hidden">
+        <div class="relative w-full max-w-6xl h-full sm:h-[85vh] bg-black rounded-xl overflow-hidden shadow-2xl flex flex-col border border-stone-700">
+            <div class="absolute top-4 right-4 z-10 flex gap-2">
+                <div class="bg-black/60 text-white px-3 py-1 rounded-full text-sm font-medium backdrop-blur border border-stone-600" id="slide-counter">1 / 15</div>
+                <button onclick="closeModal('slides-modal')" class="bg-black/60 hover:bg-rose-500 text-white p-1 rounded-full backdrop-blur border border-stone-600 transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
+            </div>
+            
+            <div class="flex-grow flex items-center justify-center relative touch-pan-y" id="slide-swipe-area">
+                <img id="slide-image" src="./Diapositivo1.jpg" alt="Diapositivo" class="max-w-full max-h-full object-contain zoomable transition-opacity duration-300" onerror="this.src='https://images.unsplash.com/photo-1509228468518-180dd4864904?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'; this.onerror=null;">
+                
+                <button onclick="prevSlide(event)" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 text-white p-3 rounded-full backdrop-blur transition-colors hidden sm:block border border-white/20">
+                    <i data-lucide="chevron-left" class="w-8 h-8"></i>
+                </button>
+                <button onclick="nextSlide(event)" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/30 text-white p-3 rounded-full backdrop-blur transition-colors hidden sm:block border border-white/20">
+                    <i data-lucide="chevron-right" class="w-8 h-8"></i>
+                </button>
+            </div>
+            
+            <div class="h-16 bg-stone-900 flex justify-center items-center gap-8 sm:hidden border-t border-stone-800">
+                <button onclick="prevSlide(event)" class="text-white p-2 active:scale-95"><i data-lucide="arrow-left" class="w-6 h-6"></i></button>
+                <span class="text-stone-400 text-xs uppercase tracking-widest font-bold">Deslize</span>
+                <button onclick="nextSlide(event)" class="text-white p-2 active:scale-95"><i data-lucide="arrow-right" class="w-6 h-6"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Guia do Utilizador -->
+    <div id="user-guide-modal" class="fixed inset-0 z-50 bg-stone-900/80 hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300 print:hidden">
+        <div class="relative w-full max-w-2xl bg-white rounded-2xl shadow-xl flex flex-col max-h-[90vh]">
+            <div class="p-6 border-b border-stone-200 flex justify-between items-center">
+                <div class="flex items-center gap-3 text-bronze-700">
+                    <i data-lucide="book-open" class="w-6 h-6"></i>
+                    <h3 class="font-bold text-xl text-stone-800">Guia do Utilizador</h3>
+                </div>
+                <button onclick="closeModal('user-guide-modal')" class="text-stone-400 hover:text-stone-800 transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto text-stone-600 space-y-4 bg-stone-50">
+                <p>Bem-vindo à aplicação de estudo dedicada ao número <strong>\(\pi\)</strong>. Explore todos os recursos didáticos restaurados e melhorados.</p>
+                <ul class="space-y-3 mt-4">
+                    <li class="flex items-start gap-3 bg-white p-3 rounded-lg border border-stone-200 shadow-sm">
+                        <i data-lucide="layers" class="w-5 h-5 text-bronze-500 mt-0.5 flex-shrink-0"></i>
+                        <div><strong>Navegação:</strong> Utilize a barra superior ou o menu para transitar entre os módulos de aprendizagem.</div>
+                    </li>
+                    <li class="flex items-start gap-3 bg-white p-3 rounded-lg border border-stone-200 shadow-sm">
+                        <i data-lucide="credit-card" class="w-5 h-5 text-bronze-500 mt-0.5 flex-shrink-0"></i>
+                        <div><strong>Quiz Cards:</strong> O cartão apenas vira e revela a resposta e a explicação técnica se acertar na sua seleção original.</div>
+                    </li>
+                    <li class="flex items-start gap-3 bg-white p-3 rounded-lg border border-stone-200 shadow-sm">
+                        <i data-lucide="check-square" class="w-5 h-5 text-bronze-500 mt-0.5 flex-shrink-0"></i>
+                        <div><strong>Quiz Formativo:</strong> As opções bloqueiam no exato momento da escolha, mostrando um painel de feedback explicativo imediato.</div>
+                    </li>
+                    <li class="flex items-start gap-3 bg-white p-3 rounded-lg border border-stone-200 shadow-sm">
+                        <i data-lucide="skull" class="w-5 h-5 text-bronze-500 mt-0.5 flex-shrink-0"></i>
+                        <div><strong>Campeonato (Morte Súbita):</strong> O desafio é dividido em 5 etapas (5 perguntas por crachá). Se falhar uma única pergunta numa etapa, perde o crachá e salta automaticamente para a etapa seguinte! Imprima o diploma no fim para provar o seu valor.</div>
+                    </li>
+                </ul>
+            </div>
+            <div class="p-4 border-t border-stone-200 bg-white text-right rounded-b-2xl">
+                <button onclick="closeModal('user-guide-modal')" class="bg-bronze-600 hover:bg-bronze-700 text-white px-6 py-2 rounded-lg font-medium transition-colors shadow-md">Compreendido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Feedback Morte Súbita / Sucesso -->
+    <div id="champ-feedback-modal" class="fixed inset-0 z-50 bg-stone-900/90 hidden flex items-center justify-center p-4 print:hidden">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center transform transition-transform scale-100 border border-stone-200">
+            <div id="champ-feedback-icon" class="mb-4"></div>
+            <h3 id="champ-feedback-title" class="text-2xl font-bold text-stone-800 mb-2">Feedback</h3>
+            <p id="champ-feedback-text" class="text-stone-600 mb-8"></p>
+            <button onclick="nextChampStage()" class="w-full bg-stone-900 hover:bg-stone-800 text-white font-bold py-3 px-6 rounded-xl transition-colors shadow-md">
+                Continuar
+            </button>
+        </div>
+    </div>
+
+
+    <!-- DADOS E LÓGICA DA APLICAÇÃO -->
+    <script>
+        lucide.createIcons();
+
+        // === Dados dos Resumos Temáticos ===
+        const summariesData = [
+            { title: "A Essência de Pi: Para Além do Círculo", content: "O número \\(\\pi\\) é, na sua génese, a expressão de uma proporção imutável. Independentemente de estarmos a medir a circunferência de um átomo ou a órbita de uma galáxia, a relação entre o perímetro (C) e o diâmetro (d) permanece rigorosamente a mesma: \\(\\pi = \\frac{C}{d}\\). Esta constante é o pilar estável da matemática porque representa uma verdade universal que sobreviveu à queda de impérios e à evolução das ferramentas de medição." },
+            { title: "A Evolução Histórica: Da Medição ao Rigor", content: "As civilizações antigas procuravam soluções pragmáticas. Os antigos Babilónios (1900–1680 a.C.) utilizavam o valor aproximado de \\(3,125\\) (fração 25/8). Os Egípcios, no Papiro Rhind, usavam \\(3,1605\\). O grande salto qualitativo deu-se com Arquimedes (c. 250 a.C.), que introduziu o método da exaustão usando polígonos regulares de 96 lados para estipular que o valor estava entre 3 10/71 e 3 1/7. Mais tarde, no séc. V, o matemático Zu Chongzhi calculou a precisão até 7 casas decimais, mantendo o recorde mundial por quase oitocentos anos." },
+            { title: "Irracionalidade e Transcendência", content: "O número \\(\\pi\\) é irracional, o que significa que a sua expansão decimal é infinita e não repetitiva, provado de forma conclusiva em 1761 por Johann Lambert. Ainda mais profundo é o facto de ser transcendente, provado por Ferdinand von Lindemann em 1882. A transcendência de \\(\\pi\\) prova que ele não é raiz de qualquer equação polinomial com coeficientes racionais, provando definitivamente a impossibilidade clássica de efetuar a quadratura do círculo com régua e compasso." },
+            { title: "Paradigmas Algorítmicos e Fórmula BBP", content: "A evolução computacional redefiniu o nosso alcance. O ENIAC, em 1949, demorou 70 horas a calcular 2.037 dígitos. Em 1995, ocorreu uma verdadeira disrupção com a Fórmula Bailey-Borwein-Plouffe (BBP). Esta fórmula permitiu um avanço revolucionário: calcular dígitos específicos diretamente em base hexadecimal sem necessitar de processar os anteriores. Em 2025, a Kioxia calculou 300 biliões de dígitos para efetuar testes de integridade ('stress tests') ao seu hardware de armazenamento NVMe." },
+            { title: "Presença Oculta na Física e Probabilidade", content: "\\(\\pi\\) surge intrinsecamente na natureza em domínios de ondas, oscilações e simetria. Surge no Princípio da Incerteza de Heisenberg (\\(\\hbar = h/2\\pi\\)) e na Lei de Coulomb onde a força se distribui sobre uma superfície esférica (\\(4\\pi r^2\\)). Um dos exemplos mais fascinantes e imprevistos é a Agulha de Buffon (1777), em que atirar agulhas aleatoriamente para um chão com tábuas paralelas revela a constante de \\(\\pi\\) devido à mecânica fundamental da probabilidade ligada à rotação geométrica natural." }
+        ];
+
+        // === Dados do Laboratório Cronológico ===
+        const timelineData = [
+            { year: "1900 a.C.", title: "Babilónios e Egípcios", desc: "Aproximação usando valores como \\(3,125\\) e \\(3,1605\\) (Papiro Rhind)." },
+            { year: "250 a.C.", title: "Arquimedes", desc: "Algoritmo rigoroso usando o método da exaustão com polígonos." },
+            { year: "Séc. V d.C.", title: "Zu Chongzhi", desc: "Calculou precisão até 7 casas decimais, mantendo o recorde por séculos." },
+            { year: "1706", title: "William Jones", desc: "Introduz a notação da letra grega \\(\\pi\\)." },
+            { year: "1761", title: "Johann Lambert", desc: "Prova a irracionalidade de \\(\\pi\\)." },
+            { year: "1777", title: "Comte de Buffon", desc: "Formula o problema probabilístico da Agulha de Buffon." },
+            { year: "1882", title: "Ferdinand Lindemann", desc: "Prova a transcendência de \\(\\pi\\)." },
+            { year: "1897", title: "Lei de Indiana", desc: "Tentativa de legislar um valor exato e racional para \\(\\pi\\)." },
+            { year: "1949", title: "Computador ENIAC", desc: "Calcula 2.037 dígitos em 70 horas." },
+            { year: "1995", title: "Fórmula BBP", desc: "Descoberta para extração de dígitos independentes." },
+            { year: "2025", title: "Kioxia", desc: "Recorde mundial de 300 biliões de dígitos para testar hardware." }
+        ];
+
+        // === Dados Completos dos Flashcards ===
+        const flashcardsData = [
+            { q: "Como é definido matematicamente o número \\(\\pi\\)?", options: ["A área de um círculo.", "O quadrado da circunferência.", "A razão entre a circunferência de um círculo e o seu diâmetro.", "A soma dos ângulos internos."], ansIndex: 2, desc: "A relação \\(\\pi = \\frac{C}{d}\\) é a essência imutável desta constante geométrica." },
+            { q: "O que caracteriza \\(\\pi\\) como um número irracional?", options: ["Tem fim após a 100ª casa decimal.", "A sua expansão decimal é infinita e não repetitiva.", "Pode ser escrito exatamente como uma fração simples.", "Tem um padrão numérico sequencial."], ansIndex: 1, desc: "Demonstrado por Lambert, não há um padrão cíclico nas suas infinitas casas decimais." },
+            { q: "Qual é a definição de um número transcendental (ex. \\(\\pi\\))?", options: ["Um número infinito.", "Um número imaginário.", "Não é raiz de qualquer equação polinomial com coeficientes racionais.", "Um número de geometria esférica."], ansIndex: 2, desc: "Provado por Lindemann em 1882, selando o destino do problema da quadratura do círculo." },
+            { q: "Qual o valor de \\(\\pi\\) usado pelos antigos babilónios (~1900 a.C.)?", options: ["3 exato", "3,1415", "3,125 (fração 25/8)", "3,1605"], ansIndex: 2, desc: "Os babilónios usavam a fração 25/8, enquanto os egípcios chegaram a ~3,1605 no Papiro Rhind." },
+            { q: "Segundo a Bíblia (I Reis 7:23), qual o valor implícito do 'mar de fundição'?", options: ["3,14", "3", "3,125", "2,99"], ansIndex: 1, desc: "O relato descreve um objeto com 10 côvados de diâmetro e 30 de perímetro, implicando o valor inteiro 3." },
+            { q: "Quem criou o primeiro algoritmo teórico rigoroso para calcular limites de \\(\\pi\\)?", options: ["Pitágoras", "Einstein", "Isaac Newton", "Arquimedes"], ansIndex: 3, desc: "Ele usou o método da exaustão, com polígonos de até 96 lados, para delimitar o valor." },
+            { q: "Qual a precisão alcançada pelo matemático Zu Chongzhi no século V?", options: ["2 casas decimais", "7 casas decimais", "15 casas decimais", "50 casas decimais"], ansIndex: 1, desc: "Calculou até 7 casas decimais (fração de Milü 355/113), mantendo o recorde por séculos." },
+            { q: "Quem introduziu pela primeira vez a letra grega \\(\\pi\\) na matemática em 1706?", options: ["Leonhard Euler", "William Jones", "Isaac Newton", "Arquimedes"], ansIndex: 1, desc: "William Jones introduziu o termo (da inicial de 'perímetro'), mas foi Leonhard Euler quem o popularizou." },
+            { q: "O que é a Agulha de Buffon (1777)?", options: ["Mecanismo de relógio", "Problema de magnetismo", "Experiência de probabilidade com linhas paralelas", "Fórmula da área da esfera"], ansIndex: 2, desc: "A probabilidade de uma agulha lançada aleatoriamente cruzar uma linha revela o número \\(\\pi\\)." },
+            { q: "O que tentou o 'Projeto de Lei de Indiana' em 1897?", options: ["Proibir o ensino de \\(\\pi\\)", "Legislar que \\(\\pi\\) era um valor exato e racional", "Usar \\(\\pi\\) apenas em geometria", "Arredondar para 3,14 legalmente"], ansIndex: 1, desc: "O médico Edwin J. Goodwin tentou legalizar o seu método falho de quadratura do círculo, que implicaria um valor errado de Pi." },
+            { q: "Qual o feito do ENIAC em 1949?", options: ["Chegou a 10 dígitos", "Descobriu a quadratura", "Calculou 2.037 dígitos em 70 horas", "Provou a transcendência"], ansIndex: 2, desc: "O primeiro supercomputador demorou um fim de semana para bater todos os recordes humanos anteriores." },
+            { q: "O que tem de especial a Fórmula BBP (1995)?", options: ["Resolve a quadratura", "Extrai o enésimo dígito hexadecimal diretamente", "Torna \\(\\pi\\) num número finito", "Exige todos os dígitos anteriores"], ansIndex: 1, desc: "É uma disrupção enorme: permite descobrir o dígito N (em base 16) sem necessitar de processar nenhum dos anteriores." },
+            { q: "Como surge \\(\\pi\\) no Princípio da Incerteza de Heisenberg?", options: ["Não surge", "No cálculo da gravidade", "Através da constante de Planck reduzida", "Na velocidade da luz"], ansIndex: 2, desc: "As partículas comportam-se como ondas, e a constante de Planck é dividida por 2\\(\\pi\\) para acomodar a periodicidade do ciclo." },
+            { q: "Por que \\(\\pi\\) surge na Lei de Coulomb?", options: ["A força eletromagnética irradia numa esfera (área 4\\(\\pi\\)r²)", "O eletrão é redondo", "Erro histórico de Coulomb", "A carga viaja em círculos"], ansIndex: 0, desc: "Qualquer força que se espalhe igualmente em três dimensões cruza a superfície de uma esfera." },
+            { q: "O que é o sistema Katapayadi?", options: ["Comida indiana", "Algoritmo computacional", "Mnemónica indiana que substitui letras por números", "Dança tradicional"], ansIndex: 2, desc: "Foi utilizado na Índia antiga para gravar valores longos como o de \\(\\pi\\) disfarçados de poemas." },
+            { q: "Qual o propósito prático de se calcularem triliões de dígitos de \\(\\pi\\) hoje em dia?", options: ["Descobrir uma mensagem extraterrestre", "Testar ao limite o CPU, memória e armazenamento de supercomputadores", "É inútil na prática", "Achar o fim do número"], ansIndex: 1, desc: "É o derradeiro 'stress test' de integridade de hardware (como no recorde da Kioxia de 2025)." },
+            { q: "Em 'Contacto' (Carl Sagan), onde diz a ficção que o arquiteto do universo escondeu uma mensagem?", options: ["Na Via Láctea", "No ADN humano", "Longe nas casas decimais de \\(\\pi\\)", "Na radiação de fundo"], ansIndex: 2, desc: "Uma bela premissa de ficção científica que usa a natureza infinita das constantes do universo." },
+            { q: "Como calcular o volume de uma esfera de raio r?", options: ["\\(4\\pi r^2\\)", "\\(\\pi r^2 h\\)", "\\(\\frac{4}{3}\\pi r^3\\)", "\\(\\pi r\\)"], ansIndex: 2, desc: "Fórmula imutável, dependente da natureza redonda dos objetos no espaço tridimensional." },
+            { q: "Como calcular a área de uma superfície esférica?", options: ["\\(2\\pi r\\)", "\\(\\frac{4}{3}\\pi r^3\\)", "\\(4\\pi r^2\\)", "\\(\\pi r^2\\)"], ansIndex: 2, desc: "Demonstrado primorosamente também pelo clássico trabalho de Arquimedes." },
+            { q: "Porque é impossível a quadratura do círculo?", options: ["\\(\\pi\\) é longo", "\\(\\pi\\) não tem raiz exata", "\\(\\pi\\) é um número transcendental e não algébrico", "Os compassos falham"], ansIndex: 2, desc: "Lindemann encerrou um problema milenar ao mostrar a barreira intransponível da transcendência matemática." },
+            { q: "O que celebramos a 14 de Março?", options: ["O dia de Arquimedes", "O Dia do \\(\\pi\\) (devido à grafia americana 3/14)", "A descoberta do ENIAC", "O dia em que a quadratura foi resolvida"], ansIndex: 1, desc: "Também coincide curiosamente com o aniversário do nascimento de Albert Einstein." }
+        ];
+
+        // === Dados Completos do Quiz Formativo / Campeonato ===
+        const quizBank = [
+            { q: "Qual é a definição matemática fundamental do número \\(\\pi\\)?", options: ["A razão entre a circunferência e o seu diâmetro.", "A área de um círculo pelo raio.", "O quadrado do perímetro.", "A diagonal pelo lado."], ansIndex: 0, rationale: "É a proporção geométrica que se mantém inalterada e universal em qualquer círculo euclidiano." },
+            { q: "O que implica matematicamente o facto de \\(\\pi\\) ser irracional?", options: ["Termina após milhões de dígitos.", "A expansão decimal é infinita e não repetitiva.", "Pode ser fração.", "Tem um padrão cíclico."], ansIndex: 1, rationale: "Provado por Lambert em 1761, o padrão numérico de \\(\\pi\\) nunca se repete, desafiando a nossa compreensão do infinito." },
+            { q: "A transcendência de \\(\\pi\\) (1882) provou que um problema clássico era impossível. Qual?", options: ["Medir as estrelas.", "A quadratura do círculo com régua e compasso.", "A duplicação do cubo.", "Criar trigonometria."], ansIndex: 1, rationale: "Por ser transcendente (Lindemann), \\(\\pi\\) não pode ser raiz de equação algébrica racional, tornando a quadratura impossível." },
+            { q: "Que valor aproximado usavam os Babilónios por volta de 1900 a.C.?", options: ["3 exato.", "3,1605", "3,125 (fração 25/8)", "3,1415"], ansIndex: 2, rationale: "Os babilónios gravavam em tábuas matemáticas a utilização avançada da fração 25/8." },
+            { q: "O Papiro Rhind (Egito) revelou que fórmula resultava num \\(\\pi \\approx 3,1605\\)?", options: ["C/d", "Área = (8/9 diâmetro)^2", "Pirâmides de base", "Volume esférico"], ansIndex: 1, rationale: "Uma das abstrações e estimativas mais precisas de toda a era pré-helénica." },
+            { q: "Que texto bíblico descreve o 'mar de fundição' sugerindo que \\(\\pi = 3\\)?", options: ["Apocalipse", "I Reis 7:23", "Génesis", "Números"], ansIndex: 1, rationale: "As escrituras descreviam o vaso do templo com 10 de diâmetro e um perímetro de 30." },
+            { q: "O algoritmo rigoroso de Arquimedes usava qual figura geométrica para aproximar \\(\\pi\\)?", options: ["Triângulos retângulos.", "Polígonos regulares inscritos e circunscritos.", "Espirais infinitas.", "Cones seccionados."], ansIndex: 1, rationale: "O célebre 'Método da Exaustão' aprisionava o círculo num espartilho poligonal até aos 96 lados." },
+            { q: "No séc V d.C., Zu Chongzhi manteve o recorde de precisão com quantas casas decimais?", options: ["3", "5", "7 (fração Milü)", "10"], ansIndex: 2, rationale: "A fração 355/113 providenciou a precisão estonteante de 7 casas decimais (3,1415929...)." },
+            { q: "Quem introduziu o símbolo \\(\\pi\\) na literatura matemática (em 1706)?", options: ["William Jones", "Arquimedes", "Euler", "Newton"], ansIndex: 0, rationale: "William Jones derivou a escolha a partir da letra grega para 'perímetro' (perimetros)." },
+            { q: "A quem se atribui a enorme popularização do símbolo \\(\\pi\\) no século XVIII?", options: ["Galileu", "Leonhard Euler", "Fibonacci", "Descartes"], ansIndex: 1, rationale: "O imenso peso e impacto das publicações académicas de Leonhard Euler normalizou o símbolo." },
+            { q: "A experiência da Agulha de Buffon relaciona \\(\\pi\\) com que área matemática?", options: ["Teoria de Grafos", "Probabilidade e Estatística", "Topologia", "Cálculo vetorial"], ansIndex: 1, rationale: "Atirar agulhas a linhas paralelas num chão cria cruzamentos governados probabilisticamente pela constante circular." },
+            { q: "O computador ENIAC calculou 2.037 dígitos de \\(\\pi\\) em 1949. Quanto tempo demorou?", options: ["1 minuto", "70 horas", "Um mês", "Um ano"], ansIndex: 1, rationale: "Um ponto de viragem, iniciando a era moderna de extração massiva de algarismos através da computação." },
+            { q: "Qual o 'super-poder' algorítmico da Fórmula BBP (1995)?", options: ["Calcula tudo em base 10.", "Extrai qualquer dígito hexadecimal diretamente sem necessitar dos anteriores.", "Encerra o infinito.", "Resolve equações diferenciais."], ansIndex: 1, rationale: "Uma genialidade que permitiu alcançar um dígito individual N cirurgicamente sem computar tudo para trás." },
+            { q: "Para que serve hoje calcular 300 triliões de dígitos, como fez a Kioxia (2025)?", options: ["Nenhuma utilidade.", "Testar e estressar os limites do hardware NVMe e processamento de dados.", "Decifrar códigos.", "Astronomia básica."], ansIndex: 1, rationale: "Funcionam como exigentes \"stress tests\" para atestar a total integridade da capacidade computacional em larga escala." },
+            { q: "Por que aparece \\(\\pi\\) no Princípio da Incerteza de Heisenberg?", options: ["Por erro histórico.", "Devido à constante de Planck reduzida associada às propriedades ondulatórias da mecânica quântica.", "Pelo tamanho circular dos eletrões.", "Magnetismo estático."], ansIndex: 1, rationale: "Na mecânica quântica, a natureza intrínseca em ciclos e frequências evoca inevitavelmente a constante do círculo." },
+            { q: "Nas equações de campo de Einstein (Relatividade Geral), o que representa a constante associada a \\(\\pi\\)?", options: ["Luz", "Como a densidade de energia-massa afeta a curvatura geométrica do espaço-tempo.", "Atrito cósmico", "Expansão linear"], ansIndex: 1, rationale: "As propriedades esféricas radiativas e a geometria do cosmos entrelaçam-se profundamente com \\(\\pi\\)." },
+            { q: "Na Lei de Coulomb, por que razão a força elétrica se divide pela constante contendo \\(4\\pi\\)?", options: ["Porque a força num espaço 3D se distribui uniformemente pela área de uma esfera (\\(4\\pi r^2\\)).", "Porque os átomos são elípticos.", "Porque 4 é o número base da física.", "Porque o vazio atrai energia em buracos."], ansIndex: 0, rationale: "Sempre que ocorre uma propagação uniforme e isotrópica em 3 dimensões, a fórmula da superfície esférica domina." },
+            { q: "Qual era o propósito do Sistema Katapayadi utilizado na Índia antiga?", options: ["Construir barcos.", "Codificar grandes números em consoantes formando versos poéticos e fáceis de decorar.", "Medicina.", "Navegação estelar."], ansIndex: 1, rationale: "Um notável e belíssimo sistema mnemónico antigo de cifra matemático-linguística." },
+            { q: "O que propunha a insólita \"Lei de Indiana\" (Projeto de Lei de 1897)?", options: ["Proibir a matemática.", "Aprovar legislação que decretaria erradamente que \\(\\pi\\) equivaleria a um rácio exato e racional.", "Banir livros de geometria.", "Tornar o \\(\\pi\\) no hino oficial."], ansIndex: 1, rationale: "Uma tentativa vergonhosa de legisladores que quase aprovaram a falsa \"quadratura do círculo\" de um médico." },
+            { q: "Qual a fórmula inconfundível para a área de um círculo?", options: ["\\(\\pi r^2\\)", "\\(2\\pi r\\)", "\\(4\\pi r^2\\)", "\\(\\pi^2 r\\)"], ansIndex: 0, rationale: "Elemento primário de conhecimento desde a antiguidade (a quadratura)." },
+            { q: "Na astronomia moderna e astronáutica, quantos dígitos de \\(\\pi\\) chegam efetivamente para cálculos extremamentes precisos?", options: ["Milhares.", "Cerca de 15 a 40 decimais, suficientes para navegação interestelar minuciosa e cálculo exato do universo visível.", "Milhões.", "Apenas o 3,14."], ansIndex: 1, rationale: "Apesar dos triliões que se calculam, o mundo real e a NASA exigem muito poucos dígitos para missões reais." },
+            { q: "Se a fórmula da circunferência é \\(C = 2\\pi r\\) e o do pêndulo oscilante tem \\(2\\pi\\), o que têm em comum?", options: ["Nada", "A descrição de ciclos naturais de repetição harmónica oscilatória.", "A gravidade terrestre", "O atrito."], ansIndex: 1, rationale: "A geometria do círculo é o análogo perfeito para o movimento perpétuo repetitivo e as ondas." },
+            { q: "Johann Lambert (1761) usou que ramo para provar a irracionalidade de \\(\\pi\\)?", options: ["Frações contínuas generalizadas aplicadas à função da tangente.", "Álgebra elementar.", "Matrizes.", "Teorema de Pitágoras."], ansIndex: 0, rationale: "Ele provou que se tan(x) não é racional se x o for. Assim, tang(\\(\\pi/4\\)) = 1, obrigando ao caráter irracional." },
+            { q: "Qual foi a origem pitoresca do \"Dia do \\(\\pi\\)\" celebrado a 14 de Março?", options: ["Foi o dia que nasceu Newton.", "A notação norte-americana da data escreve-se 3/14, assemelhando-se às três primeiras casas decimais.", "Dia oficial do Senado.", "Invenção astrológica."], ansIndex: 1, rationale: "Tornou-se a data favorita de professores e adeptos da matemática (calhando também no aniversário de Einstein)." },
+            { q: "Como resumir a natureza universal e transcendental de \\(\\pi\\)?", options: ["Um erro de cálculo.", "Permanece um rácio inalterável no universo macro e micro, sem jamais ter fim na sua expressão.", "Um código extraterrestre.", "Algo apenas teórico."], ansIndex: 1, rationale: "A marca constante de um plano geométrico inabalável onde assenta o enquadramento cósmico." }
+        ];
+
+        // === LÓGICA DE INTERFACE ===
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => { el.classList.add('hidden'); el.classList.remove('block'); });
+            const target = document.getElementById(`tab-${tabId}`);
+            if (target) { target.classList.remove('hidden'); target.classList.add('block'); }
+            
+            document.querySelectorAll('#nav-menu .nav-btn').forEach(btn => {
+                btn.className = "nav-btn px-3 py-2 rounded-md text-sm font-medium text-stone-600 hover:bg-stone-100 transition-colors";
+            });
+            const activeBtn = document.querySelector(`#nav-menu button[onclick*="${tabId}"]`);
+            if (activeBtn) activeBtn.className = "nav-btn active px-3 py-2 rounded-md text-sm font-medium transition-colors text-bronze-700 bg-bronze-50";
+            
+            if(window.MathJax) MathJax.typesetPromise();
+        }
+
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('opacity-0'); modal.classList.add('opacity-100'); }, 10);
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.querySelectorAll('video, audio').forEach(media => media.pause());
+            }, 300);
+        }
+
+        // === SLIDES ===
+        let currentSlide = 1; const totalSlides = 15;
+        let touchStartX = 0; let touchEndX = 0;
+
+        function initSlides() { currentSlide = 1; updateSlideView(); }
+        function prevSlide(e) { if(e) e.stopPropagation(); currentSlide--; if (currentSlide < 1) currentSlide = totalSlides; updateSlideView(); }
+        function nextSlide(e) { if(e) e.stopPropagation(); currentSlide++; if (currentSlide > totalSlides) currentSlide = 1; updateSlideView(); }
+
+        function updateSlideView() {
+            const imgEl = document.getElementById('slide-image');
+            imgEl.style.opacity = 0;
+            setTimeout(() => {
+                imgEl.src = `./Diapositivo${currentSlide}.jpg`;
+                imgEl.onload = () => { imgEl.style.opacity = 1; };
+                document.getElementById('slide-counter').innerText = `${currentSlide} / ${totalSlides}`;
+            }, 200);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const swipeArea = document.getElementById('slide-swipe-area');
+            if(swipeArea) {
+                swipeArea.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
+                swipeArea.addEventListener('touchend', e => { touchEndX = e.changedTouches[0].screenX; handleSwipe(); }, {passive: true});
+            }
+            renderSummaries(); renderTimeline(); renderQuizCards(); renderFormativeQuiz();
+            switchTab('estudo');
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) nextSlide();
+            if (touchEndX > touchStartX + 50) prevSlide();
+        }
+
+        // === RENDERIZAÇÃO ===
+        function renderSummaries() {
+            document.getElementById('accordion-container').innerHTML = summariesData.map((s, i) => `
+                <details class="group bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+                    <summary class="flex cursor-pointer items-center justify-between gap-1.5 p-5 text-stone-900 font-semibold text-lg bg-white hover:bg-stone-50 transition-colors">
+                        <span class="flex items-center gap-3"><span class="bg-bronze-100 text-bronze-700 w-8 h-8 rounded-full flex items-center justify-center text-sm border border-bronze-200">${i+1}</span>${s.title}</span>
+                        <i data-lucide="chevron-down" class="shrink-0 w-5 h-5 text-stone-400 transition duration-300 group-open:-rotate-180"></i>
+                    </summary>
+                    <div class="px-5 py-4 border-t border-stone-100 text-stone-600 leading-relaxed bg-stone-50">${s.content}</div>
+                </details>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function renderTimeline() {
+            document.getElementById('timeline-container').innerHTML = timelineData.map(event => `
+                <div class="relative pl-8 md:pl-0">
+                    <div class="md:flex items-center justify-between w-full">
+                        <div class="absolute left-[-21px] md:left-auto md:relative w-10 h-10 bg-white border-4 border-bronze-400 rounded-full flex items-center justify-center z-10 shadow-sm md:mx-auto">
+                            <div class="w-3 h-3 bg-bronze-600 rounded-full"></div>
+                        </div>
+                        <div class="w-full md:w-[45%] bg-white p-5 rounded-xl shadow-sm border border-stone-200 ml-4 md:ml-0 hover:-translate-y-1 transition-transform">
+                            <span class="inline-block px-3 py-1 bg-stone-100 text-bronze-800 font-bold rounded-full text-sm mb-2 border border-stone-200">${event.year}</span>
+                            <h4 class="font-bold text-lg text-stone-800 mb-2">${event.title}</h4>
+                            <p class="text-stone-600 text-sm">${event.desc}</p>
+                        </div>
+                        <div class="hidden md:block w-[45%]"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderQuizCards() {
+            document.getElementById('quiz-cards-container').innerHTML = flashcardsData.map((card, i) => `
+                <div class="relative w-full h-[380px] perspective-1000 group">
+                    <div id="flashcard-inner-${i}" class="flip-card-inner w-full h-full transition-transform duration-700 transform-style-3d shadow-md hover:shadow-xl rounded-2xl cursor-default">
+                        <div class="flip-card-front absolute w-full h-full backface-hidden bg-white p-6 rounded-2xl flex flex-col justify-between border border-stone-300">
+                            <div>
+                                <div class="text-xs font-bold text-stone-400 uppercase tracking-wider mb-3">Card ${i+1}</div>
+                                <h3 class="font-bold text-sm text-stone-800 leading-snug">${card.q}</h3>
+                            </div>
+                            <div class="space-y-2 mt-4 flex-grow flex flex-col justify-end">
+                                ${card.options.map((opt, optIndex) => `
+                                    <button onclick="handleFlashcardClick(this, ${i}, ${optIndex}, ${card.ansIndex})" class="w-full text-left p-2 rounded-lg border border-stone-200 text-xs hover:bg-stone-50 hover:border-bronze-300 transition-colors text-stone-600 font-medium">
+                                        ${opt}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="flip-card-back absolute w-full h-full backface-hidden bg-bronze-700 text-white p-6 rounded-2xl rotate-y-180 flex flex-col items-center justify-center text-center shadow-inner border border-bronze-800">
+                            <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mb-4"><i data-lucide="check" class="w-6 h-6 text-white"></i></div>
+                            <h4 class="font-bold text-lg mb-2 text-bronze-50">Correto!</h4>
+                            <p class="text-bronze-100 text-sm leading-relaxed overflow-y-auto max-h-[160px] no-scrollbar">${card.desc}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function handleFlashcardClick(btn, cardId, selectedIndex, correctIndex) {
+            if (selectedIndex === correctIndex) {
+                btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-800');
+                document.getElementById(`flashcard-inner-${cardId}`).parentNode.classList.add('flipped');
+            } else {
+                btn.classList.add('bg-rose-50', 'border-rose-300', 'text-rose-700', 'shake-animation');
+                setTimeout(() => { btn.classList.remove('shake-animation'); }, 400);
+            }
+        }
+
+        // === QUIZ FORMATIVO COM FEEDBACK IMEDIATO ===
+        let formativeState = {};
+
+        function renderFormativeQuiz() {
+            document.getElementById('quiz-total-count').innerText = quizBank.length;
+            document.getElementById('quiz-progress-indicator').classList.remove('hidden');
+
+            document.getElementById('quiz-questions-container').innerHTML = quizBank.map((q, i) => `
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-stone-200" id="formative-q-box-${i}">
+                    <h3 class="font-bold text-xl text-stone-800 mb-6 flex gap-3">
+                        <span class="text-bronze-600">${i+1}.</span> ${q.q}
+                    </h3>
+                    <div class="space-y-3">
+                        ${q.options.map((opt, optIndex) => `
+                            <label class="flex items-center p-4 border border-stone-200 rounded-xl cursor-pointer hover:bg-stone-50 transition-colors" id="label-formative-${i}-${optIndex}">
+                                <input type="radio" name="formative-${i}" value="${optIndex}" onchange="updateFormativeProgress(${i}, ${optIndex})" class="w-5 h-5 text-bronze-600 border-stone-300 focus:ring-bronze-500">
+                                <span class="ml-3 text-stone-700">${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <!-- Feedback Div -->
+                    <div id="formative-feedback-${i}" class="mt-6 p-4 rounded-xl hidden text-sm font-medium transition-all"></div>
+                </div>
+            `).join('');
+        }
+
+        function updateFormativeProgress(qIndex, selectedIndex) {
+            if (formativeState[qIndex] !== undefined) return;
+
+            formativeState[qIndex] = selectedIndex;
+            document.getElementById('quiz-answered-count').innerText = Object.keys(formativeState).length;
+            
+            const qBox = document.getElementById(`formative-q-box-${qIndex}`);
+            const q = quizBank[qIndex];
+            const feedbackBox = document.getElementById(`formative-feedback-${qIndex}`);
+            
+            qBox.querySelectorAll('input').forEach(input => input.disabled = true);
+            qBox.querySelectorAll('label').forEach(lbl => lbl.classList.remove('cursor-pointer', 'hover:bg-stone-50'));
+
+            const selectedLabel = document.getElementById(`label-formative-${qIndex}-${selectedIndex}`);
+            feedbackBox.classList.remove('hidden');
+
+            if (selectedIndex === q.ansIndex) {
+                selectedLabel.classList.add('bg-emerald-50', 'border-emerald-500', 'ring-2', 'ring-emerald-500');
+                feedbackBox.className = "mt-6 p-4 rounded-xl text-sm font-medium bg-emerald-50 text-emerald-800 border border-emerald-200 block animate-fade-in";
+                feedbackBox.innerHTML = `<i data-lucide="check-circle" class="w-5 h-5 inline mr-2 align-middle"></i> <strong>Correto!</strong><br><span class="opacity-80 mt-2 inline-block">${q.rationale}</span>`;
+            } else {
+                selectedLabel.classList.add('bg-rose-50', 'border-rose-500', 'ring-2', 'ring-rose-500');
+                const correctLabel = document.getElementById(`label-formative-${qIndex}-${q.ansIndex}`);
+                correctLabel.classList.add('bg-emerald-50', 'border-emerald-500'); 
+
+                feedbackBox.className = "mt-6 p-4 rounded-xl text-sm font-medium bg-rose-50 text-rose-800 border border-rose-200 block animate-fade-in";
+                feedbackBox.innerHTML = `<i data-lucide="x-circle" class="w-5 h-5 inline mr-2 align-middle"></i> <strong>Incorreto.</strong> A resposta correta seria a opção destacada a verde.<br><span class="opacity-80 mt-2 inline-block">${q.rationale}</span>`;
+            }
+            lucide.createIcons();
+        }
+
+        function submitFormativeQuiz() {
+            let corretas = 0, erradas = 0, ignoradas = 0;
+
+            quizBank.forEach((q, i) => {
+                if (formativeState[i] === undefined) {
+                    ignoradas++;
+                    const feedbackBox = document.getElementById(`formative-feedback-${i}`);
+                    const qBox = document.getElementById(`formative-q-box-${i}`);
+                    qBox.querySelectorAll('input').forEach(input => input.disabled = true);
+                    
+                    feedbackBox.className = "mt-6 p-4 rounded-xl text-sm font-medium bg-amber-50 text-amber-800 border border-amber-200 block";
+                    feedbackBox.innerHTML = `<i data-lucide="alert-circle" class="w-5 h-5 inline mr-2 align-middle"></i> <strong>Não respondida.</strong><br><span class="opacity-80 mt-2 inline-block">${q.rationale}</span>`;
+                } else if (formativeState[i] === q.ansIndex) {
+                    corretas++;
+                } else {
+                    erradas++;
+                }
+            });
+
+            const percent = Math.round((corretas / quizBank.length) * 100);
+            document.getElementById('res-percent').innerText = `${percent}%`;
+            document.getElementById('res-correct').innerText = corretas;
+            document.getElementById('res-incorrect').innerText = erradas;
+            document.getElementById('res-ignored').innerText = ignoradas;
+
+            document.getElementById('quiz-submit-container').classList.add('hidden');
+            document.getElementById('quiz-results-container').classList.remove('hidden');
+            document.getElementById('quiz-results-container').classList.add('block');
+            
+            lucide.createIcons();
+            document.getElementById('quiz-results-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function reviewQuiz() { document.getElementById('tab-quiz').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+
+        function resetFormativeQuiz() {
+            formativeState = {};
+            document.getElementById('quiz-answered-count').innerText = 0;
+            document.getElementById('quiz-results-container').classList.add('hidden');
+            document.getElementById('quiz-submit-container').classList.remove('hidden');
+            renderFormativeQuiz();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if(window.MathJax) MathJax.typesetPromise();
+        }
+
+        // === CAMPEONATO (MORTE SÚBITA EM GRUPOS DE 5) ===
+        let champBank = [];
+        let champCurrentQ = 0;      
+        let champCurrentGroup = 0;  
+        let champBadgesWon = [false, false, false, false, false];
+        let champCorrectAnswers = 0;
+        let isTransitioning = false;
+
+        const champBadgeConfig = [
+            { name: "Aprendiz", icon: 'user', color: 'text-stone-500', bg: 'bg-stone-100', border: 'border-stone-300' },
+            { name: "Curioso", icon: 'search', color: 'text-blue-500', bg: 'bg-blue-50', border: 'border-blue-300' },
+            { name: "Explorador", icon: 'compass', color: 'text-bronze-600', bg: 'bg-bronze-50', border: 'border-bronze-300' },
+            { name: "Especialista", icon: 'shield-check', color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-300' },
+            { name: "Mestre do Pi", icon: 'crown', color: 'text-yellow-500', bg: 'bg-yellow-50', border: 'border-yellow-400' }
+        ];
+
+        function startChampionship() {
+            const usernameInput = document.getElementById('champ-username').value.trim();
+            if (!usernameInput) {
+                document.getElementById('champ-username').classList.add('shake-animation', 'border-rose-500');
+                setTimeout(() => document.getElementById('champ-username').classList.remove('shake-animation', 'border-rose-500'), 400);
+                return;
+            }
+
+            champBank = [...quizBank].sort(() => Math.random() - 0.5);
+            champCurrentQ = 0;
+            champCurrentGroup = 0;
+            champBadgesWon = [false, false, false, false, false];
+            champCorrectAnswers = 0;
+            isTransitioning = false;
+
+            document.getElementById('champ-registration').classList.add('hidden');
+            document.getElementById('champ-display-name').innerText = usernameInput;
+            document.getElementById('champ-quiz-area').classList.remove('hidden');
+            document.getElementById('champ-quiz-area').classList.add('block');
+
+            renderChampQuestion();
+        }
+
+        function renderChampQuestion() {
+            if (champCurrentGroup >= 5 || champCurrentQ >= 25) {
+                finishChampionship();
+                return;
+            }
+
+            isTransitioning = false;
+            const q = champBank[champCurrentQ];
+            const badge = champBadgeConfig[champCurrentGroup];
+            const qInGroup = (champCurrentQ % 5) + 1; 
+
+            document.getElementById('champ-current-badge-name').innerText = badge.name;
+            document.getElementById('champ-level-indicator').innerText = champCurrentGroup + 1;
+            document.getElementById('champ-q-in-group').innerText = qInGroup;
+
+            const container = document.getElementById('champ-single-q-container');
+            container.style.opacity = 0;
+            
+            setTimeout(() => {
+                container.innerHTML = `
+                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-stone-200 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-2 ${badge.bg}"></div>
+                        <div class="flex items-start gap-4 mb-6 mt-2">
+                            <div class="bg-stone-50 p-3 rounded-full border border-stone-200">
+                                <i data-lucide="${badge.icon}" class="w-8 h-8 ${badge.color}"></i>
+                            </div>
+                            <h3 class="font-bold text-xl text-stone-800 leading-snug pt-1">
+                                ${q.q}
+                            </h3>
+                        </div>
+                        <div class="space-y-3" id="champ-options-container">
+                            ${q.options.map((opt, optIndex) => `
+                                <button onclick="handleChampAnswer(${optIndex})" class="w-full text-left p-4 border border-stone-200 rounded-xl cursor-pointer hover:bg-stone-50 transition-colors text-stone-700 font-medium text-sm md:text-base flex items-center gap-3" id="champ-btn-${optIndex}">
+                                    <span class="w-6 h-6 rounded-full border border-stone-300 flex-shrink-0 flex items-center justify-center bg-white"></span>
+                                    ${opt}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                lucide.createIcons();
+                if(window.MathJax) MathJax.typesetPromise();
+                container.style.opacity = 1;
+            }, 200);
+        }
+
+        function handleChampAnswer(selectedIndex) {
+            if (isTransitioning) return;
+            isTransitioning = true;
+
+            const q = champBank[champCurrentQ];
+            const isCorrect = (selectedIndex === q.ansIndex);
+            const optionsContainer = document.getElementById('champ-options-container');
+
+            optionsContainer.querySelectorAll('button').forEach((btn, i) => {
+                btn.disabled = true;
+                btn.classList.remove('hover:bg-stone-50', 'cursor-pointer');
+                if (i === q.ansIndex) {
+                    btn.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-800');
+                    btn.querySelector('span').classList.add('bg-emerald-500', 'border-emerald-500');
+                }
+            });
+
+            const selectedBtn = document.getElementById(`champ-btn-${selectedIndex}`);
+            
+            if (isCorrect) {
+                champCorrectAnswers++;
+                champCurrentQ++;
+
+                if (champCurrentQ % 5 === 0) {
+                    champBadgesWon[champCurrentGroup] = true;
+                    showChampFeedback(true, `Parabéns! Sobreviveu ao nível e conquistou o crachá: <strong class="text-stone-800">${champBadgeConfig[champCurrentGroup].name}</strong>.`);
+                } else {
+                    setTimeout(() => { renderChampQuestion(); }, 1000);
+                }
+            } else {
+                selectedBtn.classList.remove('bg-emerald-50', 'border-emerald-500', 'text-emerald-800');
+                selectedBtn.classList.add('bg-rose-50', 'border-rose-500', 'text-rose-800');
+                selectedBtn.querySelector('span').classList.remove('bg-emerald-500', 'border-emerald-500');
+                selectedBtn.querySelector('span').classList.add('bg-rose-500', 'border-rose-500');
+                
+                setTimeout(() => {
+                    showChampFeedback(false, `Morte Súbita! A resposta está incorreta. Perdeu a oportunidade de ganhar o crachá <strong class="text-stone-800">${champBadgeConfig[champCurrentGroup].name}</strong>. A avançar automaticamente para o próximo nível...`);
+                }, 800);
+            }
+        }
+
+        function showChampFeedback(success, message) {
+            const modal = document.getElementById('champ-feedback-modal');
+            const iconContainer = document.getElementById('champ-feedback-icon');
+            const textContainer = document.getElementById('champ-feedback-text');
+
+            if (success) {
+                iconContainer.innerHTML = `<i data-lucide="award" class="w-16 h-16 text-yellow-500"></i>`;
+                iconContainer.className = "mx-auto flex items-center justify-center h-24 w-24 rounded-full bg-yellow-50 border border-yellow-200 mb-6";
+                document.getElementById('champ-feedback-title').innerText = "Sucesso!";
+                document.getElementById('champ-feedback-title').className = "text-3xl font-bold text-yellow-600 mb-2";
+            } else {
+                iconContainer.innerHTML = `<i data-lucide="skull" class="w-16 h-16 text-rose-600"></i>`;
+                iconContainer.className = "mx-auto flex items-center justify-center h-24 w-24 rounded-full bg-rose-50 border border-rose-200 mb-6";
+                document.getElementById('champ-feedback-title').innerText = "Eliminado do Nível!";
+                document.getElementById('champ-feedback-title').className = "text-3xl font-bold text-rose-600 mb-2";
+            }
+
+            textContainer.innerHTML = message;
+            lucide.createIcons();
+            modal.classList.remove('hidden');
+        }
+
+        function nextChampStage() {
+            document.getElementById('champ-feedback-modal').classList.add('hidden');
+            
+            if (!champBadgesWon[champCurrentGroup] && champCurrentQ % 5 !== 0) {
+               champCurrentGroup++;
+               champCurrentQ = champCurrentGroup * 5;
+            } else if (champBadgesWon[champCurrentGroup]) {
+               champCurrentGroup++;
+            }
+            renderChampQuestion();
+        }
+
+        function finishChampionship() {
+            document.getElementById('champ-quiz-area').classList.add('hidden');
+            document.getElementById('champ-diploma-view').classList.remove('hidden');
+
+            const percent = Math.round((champCorrectAnswers / 25) * 100);
+            const username = document.getElementById('champ-display-name').innerText;
+            document.getElementById('champ-final-score-text').innerHTML = `Taxa de acertos global: <strong class="text-xl">${percent}%</strong>.`;
+
+            // Interface do Website
+            document.getElementById('champ-badges-display').innerHTML = champBadgeConfig.map((b, i) => {
+                const won = champBadgesWon[i];
+                const bgClass = won ? `${b.bg} ${b.border} border-2 shadow-sm` : `bg-stone-100 border border-stone-200 opacity-60 grayscale`;
+                const iconColor = won ? b.color : 'text-stone-400';
+                return `
+                    <div class="flex flex-col items-center justify-center p-3 rounded-2xl ${bgClass} w-24 h-24 md:w-28 md:h-28 text-center transition-all ${won ? 'hover:scale-105' : ''}">
+                        <i data-lucide="${won ? b.icon : 'lock'}" class="w-8 h-8 md:w-10 md:h-10 mb-2 ${iconColor}"></i>
+                        <span class="font-bold uppercase tracking-wider text-[9px] md:text-[10px] text-stone-700 leading-tight">${b.name}</span>
+                    </div>
+                `;
+            }).join('');
+
+            // Interface Impressão (Diploma Oficial Print-Only)
+            document.getElementById('champ-diploma-name').innerText = username;
+            document.getElementById('champ-diploma-score').innerText = `${percent}%`;
+            document.getElementById('champ-diploma-date').innerText = new Date().toLocaleDateString('pt-PT', { day: 'numeric', month: 'long', year: 'numeric' });
+
+            document.getElementById('champ-diploma-badges').innerHTML = champBadgeConfig.map((b, i) => {
+                const won = champBadgesWon[i];
+                const bgClass = won ? `${b.bg} ${b.border} print:border-solid print:border-2` : `bg-stone-100 border border-stone-200 print:opacity-60 grayscale`;
+                const iconColor = won ? b.color : 'text-stone-400';
+                return `
+                    <div class="flex flex-col items-center justify-center p-4 rounded-xl ${bgClass} w-32 h-32">
+                        <i data-lucide="${won ? b.icon : 'lock'}" class="w-12 h-12 mb-3 ${iconColor}"></i>
+                        <span class="font-bold uppercase tracking-widest text-[10px] text-stone-700 text-center leading-tight">${b.name}</span>
+                    </div>
+                `;
+            }).join('');
+            
+            lucide.createIcons();
+            document.getElementById('tab-campeonato').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function resetChampionship() {
+            document.getElementById('champ-diploma-view').classList.add('hidden');
+            document.getElementById('champ-registration').classList.remove('hidden');
+            document.getElementById('champ-username').value = '';
+            champState = {};
+            champBank = [];
+            champBadgesWon = [false, false, false, false, false];
+        }
+
+    </script>
+</body>
+</html>
